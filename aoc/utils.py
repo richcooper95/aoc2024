@@ -1,14 +1,16 @@
-from typing import List, Callable, Any, Optional
+from typing import List, Callable, Any, Optional, IO
 
 __all__ = (
-  "get_input",
+  "get_input_list",
 )
 
-def get_input(
+def get_input_list(
   day: int,
   *,
-  cast_func: Optional[Callable] = None
+  cast_func: Optional[Callable] = None,
+  test: Optional[bool] = False
 ) -> List[Any]:
   cast_func = cast_func or (lambda x: x)
-  with open(f"inputs/day{day:02d}.txt", "r") as f:
-    return [cast_func(x) for x in f]
+  test_dir = "test/" if test else ""
+  with open(f"inputs/{test_dir}day{day:02d}.txt", "r") as f:
+    return [cast_func(x.strip()) for x in f]
