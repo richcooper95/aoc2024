@@ -1,12 +1,18 @@
 from typing import List, ClassVar, Optional, Callable, Mapping
 import dataclasses
 import enum
-from functools import partial
 import re
 
 from ..utils import get_input_list
 
 __all__ = ("run")
+
+
+EYE_COLOURS = {
+  "amb", "blu", "brn", "gry", "grn", "hzl", "oth"
+}
+
+HGT_RE = r"#[0-9a-f]{6}"
 
 
 def validate_int(
@@ -31,28 +37,12 @@ def validate_int(
 def validate_hgt(val: str):
   units = {"cm": (150, 193), "in": (59, 76)}
   match = re.fullmatch(r"(\d+)(\w+)", val)
-
   try:
     min_val, max_val = units[match[2]]
   except (KeyError, TypeError):
     return False
   else:
     return validate_int(match[1], min_val, max_val)
-
-
-def validate_hcl(val: str) -> bool:
-  match = re.fullmatch(r"#[0-9a-f]{6}", val)
-  return match is not None
-
-
-def validate_ecl(val: str) -> bool:
-  return val in {
-    "amb", "blu", "brn", "gry", "grn", "hzl", "oth"
-  }
-
-
-def validate_pid(val: str) -> bool:
-  return validate_int(val, exp_len=9)
 
 
 class Part(enum.IntEnum):
@@ -72,22 +62,19 @@ class Entry:
   cid: str = None
 
   VAL_MAP: ClassVar[Mapping[str, Callable]] = {
-    "byr": partial(
-      validate_int,
-      min_val=1920, max_val=2002
+    "byr": lambda val: validate_int(
+      val, min_val=1920, max_val=2002
     ),
-    "iyr": partial(
-      validate_int,
-      min_val=2010, max_val=2020
+    "iyr": lambda val: validate_int(
+      val, min_val=2010, max_val=2020
     ),
-    "eyr": partial(
-      validate_int,
-      min_val=2020, max_val=2030
+    "eyr": lambda val: validate_int(
+      val, min_val=2020, max_val=2030
     ),
     "hgt": validate_hgt,
-    "hcl": validate_hcl,
-    "ecl": validate_ecl,
-    "pid": validate_pid,
+    "hcl": lambda val: re.fullmatch(HGT_RE, val) is not None,
+    "ecl": lambda val: val in EYE_COLOURS,
+    "pid": lambda val: validate_int(val, exp_len=9),
     "cid": lambda _: True
   }
 
@@ -139,7 +126,7 @@ def run_part_a() -> int: # 200
   return process(get_input_list(4), Part.A)
 
 
-def run_part_b() -> int: # TODO fix this
+def run_part_b() -> int: # 116
   return process(get_input_list(4), Part.B)
 
 
