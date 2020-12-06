@@ -1,8 +1,16 @@
 from typing import List, Callable, Any, Optional, IO
+import enum
 
 __all__ = (
   "get_input_list",
+  "Part",
 )
+
+
+class Part(enum.IntEnum):
+  A = 1
+  B = 2
+
 
 def get_input_list(
   day: int,

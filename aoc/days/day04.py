@@ -1,9 +1,8 @@
 from typing import List, ClassVar, Optional, Callable, Mapping
 import dataclasses
-import enum
 import re
 
-from ..utils import get_input_list
+from ..utils import get_input_list, Part
 
 __all__ = ("run")
 
@@ -43,11 +42,6 @@ def validate_hgt(val: str):
     return False
   else:
     return validate_int(match[1], min_val, max_val)
-
-
-class Part(enum.IntEnum):
-  A = 1
-  B = 2
 
 
 @dataclasses.dataclass

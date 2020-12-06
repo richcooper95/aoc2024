@@ -1,15 +1,9 @@
 from typing import List, Any
-import enum
 import re
 
-from ..utils import get_input_list
+from ..utils import get_input_list, Part
 
 __all__ = ("run")
-
-
-class Part(enum.IntEnum):
-  A = 1
-  B = 2
 
 
 def check_valid(
