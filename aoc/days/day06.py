@@ -14,8 +14,8 @@ def process(lines: List[str]) -> Tuple[int]:
     while i < len(lines) and lines[i]:
       group.append(set(lines[i]))
       i += 1
-    count_a += len(group[0].union(*group[1:]))
-    count_b += len(group[0].intersection(*group[1:]))
+    count_a += len(set.union(*group))
+    count_b += len(set.intersection(*group))
     i += 1
 
   return count_a, count_b
