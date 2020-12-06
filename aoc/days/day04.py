@@ -99,35 +99,31 @@ class Entry:
 
 
 # O(N)
-def process(lines: List[str], part: Part) -> int:
+def process(lines: List[str]) -> int:
   i: int = 0
-  count: int = 0
+  count_a: int = 0
+  count_b: int = 0
 
   while i < len(lines):
     entry = Entry()
     while i < len(lines) and lines[i]:
       entry.update(lines[i])
       i = i + 1
-    if entry.is_valid(part):
-      count += 1
+    if entry.is_valid(Part.A):
+      count_a += 1
+    if entry.is_valid(Part.B):
+      count_b += 1
     i = i + 1
 
-  return count
+  return count_a, count_b
 
 
 #---------------------------------------------------
 
-def run_part_a() -> int: # 200
-  return process(get_input_list(4), Part.A)
-
-
-def run_part_b() -> int: # 116
-  return process(get_input_list(4), Part.B)
-
-
 def run() -> None:
-  print(run_part_a())
-  print(run_part_b())
+  res_a, res_b = process(get_input_list(4))
+  print(res_a) # 200
+  print(res_b) # 116
 
 
 if __name__ == "__main__":

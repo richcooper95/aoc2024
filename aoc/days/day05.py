@@ -1,9 +1,9 @@
-from typing import List, Set
+from typing import List, Set, Tuple
 from dataclasses import dataclass, field
 import math
 import re
 
-from ..utils import get_input_list, Part
+from ..utils import get_input_list
 
 __all__ = ("run")
 
@@ -87,34 +87,29 @@ class Plane:
     self.min_id = min(seat_id, self.min_id) if self.min_id != 0 else seat_id
 
 
-def process(lines: List[str], part: Part) -> int:
+def process(lines: List[str]) -> Tuple[int]:
   plane = Plane()
+  empty_seat = None
+
   for line in lines:
     plane.add_pass(line)
 
-  if part is Part.A:
-    return plane.max_id
-  elif part is Part.B:
-    for seat_id in range(plane.min_id, plane.max_id):
-      if seat_id not in plane.seat_ids:
-        return seat_id
-  else:
-    raise ValueError("Invalid part.")
+  for seat_id in range(plane.min_id, plane.max_id):
+    if seat_id not in plane.seat_ids:
+      empty_seat = seat_id
+
+  if empty_seat is None:
+    raise ValueError("No empty seat found.")
+  
+  return plane.max_id, empty_seat
   
 
 #---------------------------------------------------
 
-def run_part_a() -> int: # 944
-  return process(get_input_list(5), Part.A)
-
-
-def run_part_b() -> int: # 554
-  return process(get_input_list(5), Part.B)
-
-
 def run() -> None:
-  print(run_part_a())
-  print(run_part_b())
+  res_a, res_b = process(get_input_list(5))
+  print(res_a) # 944
+  print(res_b) # 554
 
 
 if __name__ == "__main__":

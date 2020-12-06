@@ -33,28 +33,24 @@ def parsed_line(line: str) -> List[Any]:
 
 
 # O(N)
-def check_lines(input: List[List[Any]], part: "Part") -> int:
-  num_valid = 0
+def process(input: List[List[Any]]) -> int:
+  count_a = 0
+  count_b = 0
 
   for line in input:
-    if check_valid(*line, part):
-      num_valid += 1
+    if check_valid(*line, Part.A):
+      count_a += 1
+    if check_valid(*line, Part.B):
+      count_b += 1
 
-  return num_valid
+  return count_a, count_b
 
 #---------------------------------------------------
 
-def run_part_a() -> int: # 600
-  return check_lines(get_input_list(2, cast_func=parsed_line), Part.A)
-
-
-def run_part_b() -> int: # 245
-  return check_lines(get_input_list(2, cast_func=parsed_line), Part.B)
-
-
 def run() -> None:
-  print(run_part_a())
-  print(run_part_b())
+  res_a, res_b = process(get_input_list(2, cast_func=parsed_line))
+  print(res_a) # 600
+  print(res_b) # 245
 
 
 if __name__ == "__main__":
