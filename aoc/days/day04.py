@@ -104,6 +104,7 @@ class Entry:
       setattr(self, attr, val)
 
 
+# O(N)
 def process(lines: List[str], part: Part) -> int:
   i: int = 0
   count: int = 0
