@@ -35,7 +35,7 @@ class Slope:
 
   def process_line(self, i: int, line: str) -> None:
     if i == self.y:
-      if self.is_tree(line.strip()):
+      if self.is_tree(line):
         self.trees += 1
       self.increment()
 

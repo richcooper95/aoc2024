@@ -1,9 +1,11 @@
-from typing import List, Callable, Any, Optional, IO
+from typing import List, Callable, Any, Optional
+from functools import wraps
 import enum
 
 __all__ = (
-  "get_input_list",
   "Part",
+  "get_input_list",
+  "memoize",
 )
 
 
@@ -22,3 +24,12 @@ def get_input_list(
   test_dir = "test/" if test else ""
   with open(f"inputs/{test_dir}day{day:02d}.txt", "r") as f:
     return [cast_func(x.strip()) for x in f]
+
+def memoize(func):
+  cache = {}
+  @wraps(func)
+  def helper(*args):
+    if args not in cache:
+      cache[args] = func(*args)
+    return cache[args]
+  return helper
