@@ -11,6 +11,7 @@ def process(lines: List[str]) -> Tuple[int]:
   container_map = defaultdict(set) # map a bag to the bags which can contain it
 
   for line in lines:
+    # TODO: improve error handling of badly-formatted entries here
     bag, bag_info = line.split(" bags contain ")
     if "no other" in bag_info:
       # set value to empty list to allow common treatment during later walk
