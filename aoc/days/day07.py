@@ -23,7 +23,7 @@ def process(lines: List[str]) -> Tuple[int]:
         (int(elem[0]), elem[2:elem.index(" bag")])
         for elem in bag_info.split(", ")
       ]
-      # add the bag to all the contained bags in the container map
+      # add the bag to the entries for all contained bags in the container map
       for b in capacity_map[bag]:
         container_map[b[1]].add(bag)
   
