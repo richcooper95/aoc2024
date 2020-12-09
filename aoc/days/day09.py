@@ -27,10 +27,11 @@ def get_invalid_num(nums: List[int]) -> int:
       preceding_nums.append(num)
       curr += 1
       preceding_nums.popleft()
+  
+  raise ValueError("No invalid number present in input.")
 
 
 def get_weakness(invalid_num: int, nums: List[int]) -> int:
-  weakness = None
   candidate_slice = collections.deque()
   total = 0
 
@@ -42,10 +43,9 @@ def get_weakness(invalid_num: int, nums: List[int]) -> int:
       total -= candidate_slice.popleft()
   
     if total == invalid_num:
-      weakness = min(candidate_slice) + max(candidate_slice)
-      break
-
-  return weakness
+      return min(candidate_slice) + max(candidate_slice)
+  
+  raise ValueError("No weakness present in input.")
   
 
 #---------------------------------------------------
