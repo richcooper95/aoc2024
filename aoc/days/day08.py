@@ -92,21 +92,17 @@ def process(lines: List[str]) -> Tuple[int]:
   cmd_map = {"nop": "jmp", "jmp": "nop"}
   visited = console.visited
   for idx in visited:
-    # TODO: Why do we need to create a new copy of the list (below) each time?
-    # If I move the definition of 'copy' out of the loop, or modify 'lines' in place,
-    # I get a different answer - not sure why!
-    copy = lines[:]
-    cmd, incr = copy[idx].split()
+    cmd, incr = lines[idx].split()
     if cmd in cmd_map:
-      copy[idx] = " ".join([cmd_map[cmd], incr])
-      test_console = Console(copy)
+      lines[idx] = " ".join([cmd_map[cmd], incr])
+      console = Console(lines)
       try:
-        test_console.boot()
+        console.boot()
       except (InfiniteLoopError, InstructionOutOfRangeError):
-        # TODO: below line unnecessary in current implementation
-        copy[idx] = " ".join([cmd, incr])
+        lines[idx] = " ".join([cmd, incr])
       else:
-        acc_success = test_console.accumulator
+        acc_success = console.accumulator
+        break
 
   return acc_before_loop, acc_success
   
