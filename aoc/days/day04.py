@@ -2,9 +2,9 @@ from typing import List, ClassVar, Optional, Callable, Mapping
 import dataclasses
 import re
 
-from ..utils import get_input_list, Part
+from .. import utils
 
-__all__ = ("run")
+__all__ = ("main")
 
 
 EYE_COLOURS = {
@@ -72,10 +72,10 @@ class Entry:
     "cid": lambda _: True
   }
 
-  def is_valid(self, part: Part) -> bool:
-    if part is Part.A:
+  def is_valid(self, part: utils.Part) -> bool:
+    if part is utils.Part.A:
       validate = lambda k, v: v is not None if k != "cid" else True
-    elif part is Part.B:
+    elif part is utils.Part.B:
       validate = self.validate_attr
     else:
       raise ValueError("Invalid part.")
@@ -109,9 +109,9 @@ def process(lines: List[str]) -> int:
     while i < len(lines) and lines[i]:
       entry.update(lines[i])
       i = i + 1
-    if entry.is_valid(Part.A):
+    if entry.is_valid(utils.Part.A):
       count_a += 1
-    if entry.is_valid(Part.B):
+    if entry.is_valid(utils.Part.B):
       count_b += 1
     i = i + 1
 
@@ -120,11 +120,11 @@ def process(lines: List[str]) -> int:
 
 #---------------------------------------------------
 
-def run() -> None:
-  res_a, res_b = process(get_input_list(4))
+def main() -> None:
+  res_a, res_b = process(utils.get_input_list(__name__))
   print(res_a) # 200
   print(res_b) # 116
 
 
 if __name__ == "__main__":
-  run()
+  main()

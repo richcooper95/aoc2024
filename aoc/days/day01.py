@@ -1,8 +1,8 @@
 from typing import List
 
-from ..utils import get_input_list
+from .. import utils
 
-__all__ = ("run")
+__all__ = ("main")
 
 
 class PairNotFoundError(Exception):
@@ -36,20 +36,11 @@ def find_triplet_product(nums) -> int:
 
 #---------------------------------------------------
 
-def run_part_a() -> int: # 73371
-  # Find product of pair which sums to 2020
-  return find_pair_product(get_input_list(1, cast_func=int), 2020)
-
-
-def run_part_b() -> int: # 127642310
-  # Find product of triplet which sums to 2020
-  return find_triplet_product(get_input_list(1, cast_func=int))
-
-
-def run() -> None:
-  print(run_part_a())
-  print(run_part_b())
+def main() -> None:
+  nums = utils.get_input_list(__name__, cast_func=int)
+  print(find_pair_product(nums, 2020)) # 73371
+  print(find_triplet_product(nums)) # 127642310
 
 
 if __name__ == "__main__":
-  run()
+  main()

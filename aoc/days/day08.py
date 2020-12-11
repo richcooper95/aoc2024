@@ -2,9 +2,9 @@ from typing import List, Tuple
 import enum
 import re
 
-from ..utils import get_input_list
+from .. import utils
 
-__all__ = ("run")
+__all__ = ("main")
 
 
 class InvalidInstructionsError(Exception):
@@ -109,11 +109,11 @@ def process(lines: List[str]) -> Tuple[int]:
 
 #---------------------------------------------------
 
-def run() -> None:
-  res_a, res_b = process(get_input_list(8))
+def main() -> None:
+  res_a, res_b = process(utils.get_input_list(__name__))
   print(res_a) # 1941
   print(res_b) # 2096
 
 
 if __name__ == "__main__":
-  run()
+  main()

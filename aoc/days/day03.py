@@ -2,9 +2,9 @@ from typing import List, Union
 from math import prod
 import dataclasses
 
-from ..utils import get_input_list
+from .. import utils
 
-__all__ = ("run")
+__all__ = ("main")
 
 
 @dataclasses.dataclass
@@ -54,27 +54,20 @@ def count_trees(
 
 #---------------------------------------------------
 
-def run_part_a() -> int: # 225
-  return count_trees(get_input_list(3), [Slope(3, 1)])
-
-
-def run_part_b() -> int: # 1115775000
-  return count_trees(
-    get_input_list(3),
-    [
-      Slope(1, 1),
-      Slope(3, 1),
-      Slope(5, 1),
-      Slope(7, 1),
-      Slope(1, 2)
-    ]
-  )
-
-
-def run() -> None:
-  print(run_part_a())
-  print(run_part_b())
+def main() -> None:
+  input_list = utils.get_input_list(__name__)
+  print(count_trees(input_list, [Slope(3, 1)])) # 225
+  print(count_trees( # 1115775000
+      input_list,
+      [
+        Slope(1, 1),
+        Slope(3, 1),
+        Slope(5, 1),
+        Slope(7, 1),
+        Slope(1, 2)
+      ]
+  ))
 
 
 if __name__ == "__main__":
-  run()
+  main()

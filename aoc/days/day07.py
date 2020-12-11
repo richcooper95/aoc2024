@@ -1,9 +1,9 @@
 from typing import List, Tuple
 from collections import defaultdict
 
-from ..utils import get_input_list
+from .. import utils
 
-__all__ = ("run")
+__all__ = ("main")
 
 
 def process(lines: List[str]) -> Tuple[int]:
@@ -45,11 +45,11 @@ def process(lines: List[str]) -> Tuple[int]:
 
 #---------------------------------------------------
 
-def run() -> None:
-  res_a, res_b = process(get_input_list(7))
+def main() -> None:
+  res_a, res_b = process(utils.get_input_list(__name__))
   print(res_a) # 213
   print(res_b) # 38426
 
 
 if __name__ == "__main__":
-  run()
+  main()

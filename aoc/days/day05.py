@@ -3,9 +3,9 @@ from dataclasses import dataclass, field
 import math
 import re
 
-from ..utils import get_input_list
+from .. import utils
 
-__all__ = ("run")
+__all__ = ("main")
 
 NUM_ROWS = 128
 NUM_COLS = 8
@@ -106,11 +106,11 @@ def process(lines: List[str]) -> Tuple[int]:
 
 #---------------------------------------------------
 
-def run() -> None:
-  res_a, res_b = process(get_input_list(5))
+def main() -> None:
+  res_a, res_b = process(utils.get_input_list(__name__))
   print(res_a) # 944
   print(res_b) # 554
 
 
 if __name__ == "__main__":
-  run()
+  main()

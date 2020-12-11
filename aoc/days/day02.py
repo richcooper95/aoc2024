@@ -1,9 +1,9 @@
 from typing import List, Any
 import re
 
-from ..utils import get_input_list, Part
+from .. import utils
 
-__all__ = ("run")
+__all__ = ("main")
 
 
 def check_valid(
@@ -11,11 +11,11 @@ def check_valid(
   j: int,
   char: str,
   pword: str,
-  part: "Part"
+  part: "utils.Part"
 ) -> bool:
-  if part is Part.A:
+  if part is utils.Part.A:
     valid = pword.count(char) in range(i, j + 1)
-  elif part is Part.B:
+  elif part is utils.Part.B:
     valid = (pword[i - 1] == char) ^ (pword[j - 1] == char)
   else:
     raise ValueError("Invalid part.")
@@ -38,20 +38,20 @@ def process(input: List[List[Any]]) -> int:
   count_b = 0
 
   for line in input:
-    if check_valid(*line, Part.A):
+    if check_valid(*line, utils.Part.A):
       count_a += 1
-    if check_valid(*line, Part.B):
+    if check_valid(*line, utils.Part.B):
       count_b += 1
 
   return count_a, count_b
 
 #---------------------------------------------------
 
-def run() -> None:
-  res_a, res_b = process(get_input_list(2, cast_func=parsed_line))
+def main() -> None:
+  res_a, res_b = process(utils.get_input_list(__name__, cast_func=parsed_line))
   print(res_a) # 600
   print(res_b) # 245
 
 
 if __name__ == "__main__":
-  run()
+  main()

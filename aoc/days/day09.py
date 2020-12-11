@@ -2,9 +2,9 @@ from typing import List
 import collections
 import itertools
 
-from ..utils import get_input_list
+from .. import utils
 
-__all__ = ("run")
+__all__ = ("main")
 
 PREAMBLE = 25
 
@@ -50,8 +50,8 @@ def get_weakness(invalid_num: int, nums: List[int]) -> int:
 
 #---------------------------------------------------
 
-def run() -> None:
-  nums = get_input_list(9, cast_func=int)
+def main() -> None:
+  nums = utils.get_input_list(__name__, cast_func=int)
   invalid_num = get_invalid_num(nums)
   weakness = get_weakness(invalid_num, nums)
   print(invalid_num) # 552655238
@@ -59,4 +59,4 @@ def run() -> None:
 
 
 if __name__ == "__main__":
-  run()
+  main()
