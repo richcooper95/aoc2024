@@ -29,6 +29,7 @@ class Space:
   def __repr__(self) -> str:
     return str(self.state)
 
+
   def calculate_new_state(self, part: utils.Part) -> None:
     if part is utils.Part.A:
       num = 4
@@ -50,6 +51,7 @@ class Space:
     else:
       self.new_state = self.state
 
+
   def update(self) -> None:
     self.state = self.new_state
 
@@ -58,13 +60,16 @@ class Row:
   def __init__(self, spaces):
     self.spaces = spaces
 
+
   def __getitem__(self, idx: int):
     if idx < 0:
       raise IndexError
     return self.spaces[idx]
 
+
   def __len__(self):
     return len(self.spaces)
+
 
   @classmethod
   def from_string(cls, string: str):
@@ -83,13 +88,16 @@ class Ferry:
       string += "\n" + "".join(space.state.value for space in row)
     return string
 
+
   @property
   def x_max(self):
     return len(self.rows[0]) - 1
 
+
   @property
   def y_max(self):
     return len(self.rows) - 1
+
 
   def update(self, part: utils.Part):
     # first pass calculates new state based on current state
@@ -115,6 +123,7 @@ class Ferry:
   
     return occupied, changed
 
+
   @staticmethod
   def _get_neighbour_indices(x: int, y: int):
     return [
@@ -122,6 +131,7 @@ class Ferry:
       (x - 1, y), (x + 1, y),
       (x - 1, y + 1), (x, y + 1), (x + 1, y + 1),
     ]
+
 
   def _get_visible_seat(self, x: int, y: int, dx: int, dy: int):
     _x = x + dx
@@ -133,6 +143,7 @@ class Ferry:
       _x += dx
       _y += dy
 
+
   def _get_visible_seats(self, x: int, y: int):
     seats = []
     deltas = [
@@ -143,6 +154,7 @@ class Ferry:
       if seat is not None:
         seats.append(seat)
     return seats
+
 
   def get_checked_spaces(self, part: utils.Part, x: int, y: int):
     checked_spaces = []
