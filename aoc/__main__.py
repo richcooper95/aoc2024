@@ -10,7 +10,7 @@ def main():
     m[:-3] for m in os.listdir("aoc/days")
     if re.fullmatch(r"day\d+\.py", m) is not None
   ]
-  for day in days:
+  for day in sorted(days):
     print(f"### Day {day[3:]}")
     import_module(f".days.{day}", __package__).main()
     print("")

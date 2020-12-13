@@ -1,7 +1,6 @@
 from typing import List, Any
 import dataclasses
 import enum
-import time
 
 from .. import utils
 
@@ -24,9 +23,7 @@ class BoundedList(list):
 @dataclasses.dataclass
 class Space:
   state: State
-  checked_spaces: List["Space"] = dataclasses.field(
-    default_factory=lambda: list()
-  )
+  checked_spaces: List["Space"] = None
   new_state = None
   
   def __repr__(self) -> str:
@@ -79,8 +76,6 @@ class Ferry:
   rows: BoundedList = dataclasses.field(
     default_factory=lambda: BoundedList()
   )
-  changed: bool = True
-  occupied: int = 0
 
   def __repr__(self):
     string = ""
@@ -97,17 +92,28 @@ class Ferry:
     return len(self.rows) - 1
 
   def update(self, part: utils.Part):
-    self.occupied = 0
-    self.changed = False
-    for row in self.rows:
-      for space in row:
+    # first pass calculates new state based on current state
+    occupied = 0
+    changed = False
+    for y, row in enumerate(self.rows):
+      for x, space in enumerate(row):
+        # set the spaces to check if not already set
+        if space.checked_spaces is None:
+          space.checked_spaces = self.get_checked_spaces(part, x, y)
+  
         space.calculate_new_state(part)
-        if not self.changed:
-          self.changed = space.state != space.new_state
-        self.occupied += 1 if space.state is State.OCCUPIED else 0
+
+        if not changed:
+          changed = space.state != space.new_state
+
+        occupied += 1 if space.state is State.OCCUPIED else 0
+  
+    # second pass enacts the state update for each space
     for row in self.rows:
       for space in row:
         space.update()
+  
+    return occupied, changed
 
   @staticmethod
   def _get_neighbour_indices(x: int, y: int):
@@ -137,48 +143,42 @@ class Ferry:
       if seat is not None:
         seats.append(seat)
     return seats
-    
-  def set_neighbours(self):
-    for y, row in enumerate(self.rows):
-      for x, space in enumerate(row):
-        for _x, _y in self._get_neighbour_indices(x, y):
-          try:
-            space.checked_spaces.append(self.rows[_y][_x])
-          except IndexError:
-            pass
 
-  def set_visible(self):
-    for y, row in enumerate(self.rows):
-      for x, space in enumerate(row):
-        space.checked_spaces = [seat for seat in self._get_visible_seats(x, y)]
-
-  def set_checked_spaces(self, part: utils.Part):
+  def get_checked_spaces(self, part: utils.Part, x: int, y: int):
+    checked_spaces = []
     if part is utils.Part.A:
-      self.set_neighbours()
+      for _x, _y in self._get_neighbour_indices(x, y):
+        try:
+          checked_spaces.append(self.rows[_y][_x])
+        except IndexError:
+          pass
     elif part is utils.Part.B:
-      self.set_visible()
+      checked_spaces = [seat for seat in self._get_visible_seats(x, y)]
     else:
       raise ValueError("Invalid part.")
+    
+    return checked_spaces
 
 
-def process(rows: BoundedList, part: utils.Part):
-  ferry = Ferry(rows)
-  ferry.set_checked_spaces(part)
+def process(part: utils.Part):
+  ferry = Ferry(
+    BoundedList(
+      utils.get_input_list(__name__, cast_func=Row.from_string)
+    )
+  )
 
-  while ferry.changed:
-    ferry.update(part)
+  changed = True
+  while changed:
+    occupied, changed = ferry.update(part)
 
-  return ferry.occupied
+  return occupied
 
 
 #---------------------------------------------------
 
 def main() -> None:
-  rows = BoundedList(
-    utils.get_input_list(__name__, cast_func=Row.from_string)
-  )
-  print(process(rows, utils.Part.A)) # 2270
-  print(process(rows, utils.Part.B)) # 2042
+  print(process(utils.Part.A)) # 2270
+  print(process(utils.Part.B)) # 2042
 
 
 if __name__ == "__main__":
