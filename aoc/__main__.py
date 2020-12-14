@@ -4,16 +4,23 @@ import sys
 import traceback
 
 from importlib import import_module
+from typing import List
+
+def run_day(day_mod: str):
+  print(f"### Day {day_mod[3:]}")
+  import_module(f".days.{day_mod}", __package__).main()
+  print("")
+
+def run_all(day_mods: List[str]):
+  for day_mod in sorted(day_mods):
+    run_day(day_mod)
 
 def main():
-  days = [
+  day_mods = [
     m[:-3] for m in os.listdir("aoc/days")
     if re.fullmatch(r"day\d+\.py", m) is not None
   ]
-  for day in sorted(days):
-    print(f"### Day {day[3:]}")
-    import_module(f".days.{day}", __package__).main()
-    print("")
+  run_day(day_mods[-1])
 
 
 try:
