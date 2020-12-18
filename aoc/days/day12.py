@@ -114,7 +114,8 @@ def process(part: utils.Part):
   ship = Ship(
     np.array([0, 0]),
     part,
-    waypoint=np.array([10, 1]) if part is utils.Part.B else None)
+    waypoint=np.array([10, 1]) if part is utils.Part.B else None
+  )
 
   ship.travel(utils.get_input_list(__name__))
   
