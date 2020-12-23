@@ -1,8 +1,7 @@
-from typing import List, Tuple, Any
+from typing import List, Tuple, Any, Dict, Set
 import dataclasses
 import enum
 import re
-import time
 
 from .. import utils
 
@@ -73,86 +72,83 @@ class Ticket:
     return invalid_values
 
 
-def parse_input(input_list: List[str]) -> Tuple[Any]:
-  section = InputSection.RULES
-  rules = []
-  valid_tickets = []
+def parse_rules(lines: List[str]) -> List[Rule]:
+  return [Rule.from_string(line) for line in lines]
+
+
+def parse_tickets(
+  lines: List[str],
+  rules: List[Rule],
+  unknown_slots: Dict[int, Set]
+) -> int:
   invalid_count = 0
+  for line in lines:
+    ticket = Ticket.from_string(line)
+    invalid_values = ticket.get_invalid_values(rules)
 
-  for i, line in enumerate(input_list):
-    if line:
-      if line in SECTION_MARKERS:
-        section = SECTION_MARKERS[line]
+    for value in invalid_values:
+      invalid_count += value
 
-      elif section is InputSection.RULES:
-        rules.append(Rule.from_string(line))
+    if not invalid_values:
+      # This ticket is valid, so use it to remove possible rules from the
+      # unknown slots map if the associated rule is violated by any
+      # ticket values in that slot.
+      for slot, val in enumerate(ticket.values):
+        for rule_idx, rule in enumerate(rules):
+          if not rule.obeyed_by(val):
+            unknown_slots[slot].remove(rule_idx)
 
-      elif section is InputSection.MYTICKET:
-        my_ticket = Ticket.from_string(line)
-
-      elif section is InputSection.TICKETS:
-        ticket = Ticket.from_string(line)
-        invalid_values = ticket.get_invalid_values(rules)
-
-        for value in invalid_values:
-          invalid_count += value
-
-        if not invalid_values:
-          valid_tickets.append(ticket)
-  
-  return rules, valid_tickets, my_ticket, invalid_count
+  return invalid_count
 
 
 @utils.display
-def process(input_list: List[str]):
-  start = time.monotonic()
-  # Parse input (also obtaining the Part A result).
-  rules, valid_tickets, my_ticket, invalid_count = parse_input(input_list)
+def process(input_sections: List[str]):
+  # Process the rules first, so we can use them while processing tickets.
+  rules = parse_rules(input_sections[0].splitlines())
 
-  # Initially all slots could be for any rule.
+  # Initialise a map of each slot to the rule indices it could correspond to.
+  # Initially, each slot could correspond to any rule index.
   unknown_slots = {
     slot: set(range(len(rules))) for slot in range(len(rules))
   }
 
-  print(f"{1000 * (time.monotonic() - start)}ms")
-  
-  # First use information from tickets to remove possible rule indices
-  # if the rule is violated by any ticket values in that slot.
-  for ticket in valid_tickets:
-    for slot, val in enumerate(ticket.values):
-      for rule_idx, rule in enumerate(rules):
-        if not rule.obeyed_by(val):
-          unknown_slots[slot].remove(rule_idx)
+  # Parse nearby tickets, obtaining the sum of all invalid values for Part A
+  # and simultaneously reducing the unknown map for Part B.
+  invalid_count = parse_tickets(
+    input_sections[2].splitlines()[1:],
+    rules,
+    unknown_slots
+  )
 
-  print(f"{1000 * (time.monotonic() - start)}ms")
-
-  # Next use information from already-determined fields to reach a final
-  # assignment.
+  # Next use information from already-determined fields to reach a known
+  # assignment for each slot.
   known_slots = {}
   while len(known_slots) < len(rules):
     prev_len = len(known_slots)
-    for slot, rule_idxs in unknown_slots.items():
+
+    for slot, possible_rules in unknown_slots.items():
       for name in known_slots.values():
         unknown_slots[slot].discard(name)
 
-      if len(rule_idxs) == 1:
-        known_slots[slot] = rule_idxs.pop()
+      if len(possible_rules) == 1:
+        known_slots[slot] = possible_rules.pop()
     
     for slot in known_slots:
       if slot in unknown_slots:
         del unknown_slots[slot]
 
+    # Expect to assign a new known slot on each iteration. If we don't, then
+    # we are unable to uniquely determine the slots.
     if prev_len == len(known_slots):
-      raise ValueError("Unable to uniquely determine fields.")
-
-  print(f"{1000 * (time.monotonic() - start)}ms")
+      raise ValueError("Unable to uniquely determine slots.")
   
+  # Parse my ticket and calculate the product of all "departure*" fields.
+  my_ticket = Ticket.from_string(input_sections[1].splitlines()[1].strip())
+
   prod = 1
   for slot, rule_idx in known_slots.items():
     if rules[rule_idx].name.startswith("departure"):
       prod *= my_ticket.values[slot]
-
-  print(f"{1000 * (time.monotonic() - start)}ms")
 
   return invalid_count, prod
 
@@ -160,7 +156,7 @@ def process(input_list: List[str]):
 #---------------------------------------------------
 
 def main() -> None:
-  process(utils.get_input_list(__name__)) # 27911, 737176602479
+  process(utils.get_input_sections(__name__)) # 27911, 737176602479
 
 
 if __name__ == "__main__":

@@ -15,6 +15,10 @@ class Part(enum.IntEnum):
   B = 2
 
 
+def print_tdelta(start: int):
+  print(f"{1000 * (time.monotonic() - start):.3f}ms")
+
+
 def get_input_list(
   module: str,
   *,
@@ -26,6 +30,17 @@ def get_input_list(
   day = module.split(".")[-1]
   with open(f"inputs/{test_dir}{day}.txt", "r") as f:
     return [cast_func(x.strip()) for x in f]
+
+
+def get_input_sections(
+  module: str,
+  *,
+  test: Optional[bool] = False
+) -> List[Any]:
+  test_dir = "test/" if test else ""
+  day = module.split(".")[-1]
+  with open(f"inputs/{test_dir}{day}.txt", "r") as f:
+    return f.read().split("\n\n")
 
 
 def memoize(func: Callable):
