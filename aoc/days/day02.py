@@ -33,6 +33,7 @@ def parsed_line(line: str) -> List[Any]:
 
 
 # O(N)
+@utils.display
 def process(input: List[List[Any]]) -> int:
   count_a = 0
   count_b = 0
@@ -48,9 +49,7 @@ def process(input: List[List[Any]]) -> int:
 #---------------------------------------------------
 
 def main() -> None:
-  res_a, res_b = process(utils.get_input_list(__name__, cast_func=parsed_line))
-  print(res_a) # 600
-  print(res_b) # 245
+  process(utils.get_input_list(__name__, cast_func=parsed_line)) # 600, 245
 
 
 if __name__ == "__main__":

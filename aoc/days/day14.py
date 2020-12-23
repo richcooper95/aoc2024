@@ -65,17 +65,19 @@ class Computer:
       raise ValueError("Invalid part.")
 
 
+@utils.display
 def process(input_list: List[str], part: utils.Part):
   computer = Computer(input_list, part)
-  return(computer.init())
+
+  return computer.init()
 
 
 #---------------------------------------------------
 
 def main() -> None:
   input_list = utils.get_input_list(__name__)
-  print(process(input_list, utils.Part.A)) # 13476250121721
-  print(process(input_list, utils.Part.B)) # 4463708436768
+  process(input_list, utils.Part.A) # 13476250121721
+  process(input_list, utils.Part.B) # 4463708436768
 
 
 if __name__ == "__main__":

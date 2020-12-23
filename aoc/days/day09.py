@@ -8,6 +8,8 @@ __all__ = ("main")
 
 PREAMBLE = 25
 
+
+@utils.display
 def get_invalid_num(nums: List[int]) -> int:
   curr = PREAMBLE
   preceding_nums = collections.deque(itertools.islice(nums, PREAMBLE))
@@ -31,6 +33,7 @@ def get_invalid_num(nums: List[int]) -> int:
   raise ValueError("No invalid number present in input.")
 
 
+@utils.display
 def get_weakness(invalid_num: int, nums: List[int]) -> int:
   candidate_slice = collections.deque()
   total = 0
@@ -52,10 +55,8 @@ def get_weakness(invalid_num: int, nums: List[int]) -> int:
 
 def main() -> None:
   nums = utils.get_input_list(__name__, cast_func=int)
-  invalid_num = get_invalid_num(nums)
-  weakness = get_weakness(invalid_num, nums)
-  print(invalid_num) # 552655238
-  print(weakness) # 70672245
+  invalid_num = get_invalid_num(nums) # 552655238
+  get_weakness(invalid_num, nums) # 70672245
 
 
 if __name__ == "__main__":

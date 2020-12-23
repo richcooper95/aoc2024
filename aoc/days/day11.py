@@ -172,6 +172,7 @@ class Ferry:
     return checked_spaces
 
 
+@utils.display
 def process(part: utils.Part):
   ferry = Ferry(
     BoundedList(
@@ -189,8 +190,8 @@ def process(part: utils.Part):
 #---------------------------------------------------
 
 def main() -> None:
-  print(process(utils.Part.A)) # 2270
-  print(process(utils.Part.B)) # 2042
+  process(utils.Part.A) # 2270
+  process(utils.Part.B) # 2042
 
 
 if __name__ == "__main__":

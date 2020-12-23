@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 import dataclasses
 import math
 
@@ -60,10 +60,8 @@ class Schedule:
     return t
 
 
-#---------------------------------------------------
-
-def main() -> None:
-  input_list = utils.get_input_list(__name__)
+@utils.display
+def process(input_list: List[str]):
   try:
     start = int(input_list[0])
     intervals = {
@@ -76,8 +74,16 @@ def main() -> None:
 
   schedule = Schedule(intervals)
 
-  print(math.prod(schedule.get_service_info_after(start))) # 136
-  print(schedule.find_timestamp_consecutive_services()) # 305068317272992
+  return (
+    math.prod(schedule.get_service_info_after(start)), # 136
+    schedule.find_timestamp_consecutive_services() # 305068317272992
+  )
+
+
+#---------------------------------------------------
+
+def main() -> None:
+  process(utils.get_input_list(__name__))
 
 
 if __name__ == "__main__":

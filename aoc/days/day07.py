@@ -6,6 +6,7 @@ from .. import utils
 __all__ = ("main")
 
 
+@utils.display
 def process(lines: List[str]) -> Tuple[int]:
   capacity_map = dict() # map a bag to the bags it can contain
   container_map = defaultdict(set) # map a bag to the bags which can contain it
@@ -46,9 +47,7 @@ def process(lines: List[str]) -> Tuple[int]:
 #---------------------------------------------------
 
 def main() -> None:
-  res_a, res_b = process(utils.get_input_list(__name__))
-  print(res_a) # 213
-  print(res_b) # 38426
+  process(utils.get_input_list(__name__)) # 213, 38426
 
 
 if __name__ == "__main__":

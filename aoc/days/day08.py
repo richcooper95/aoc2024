@@ -79,6 +79,7 @@ class Console:
     self.visited.add(lineno)
 
 
+@utils.display
 def process(lines: List[str]) -> Tuple[int]:
   console = Console(lines)
   try:
@@ -110,9 +111,7 @@ def process(lines: List[str]) -> Tuple[int]:
 #---------------------------------------------------
 
 def main() -> None:
-  res_a, res_b = process(utils.get_input_list(__name__))
-  print(res_a) # 1941
-  print(res_b) # 2096
+  process(utils.get_input_list(__name__)) # 1941, 2096
 
 
 if __name__ == "__main__":

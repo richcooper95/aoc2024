@@ -99,6 +99,7 @@ class Entry:
 
 
 # O(N)
+@utils.display
 def process(lines: List[str]) -> int:
   i: int = 0
   count_a: int = 0
@@ -121,9 +122,7 @@ def process(lines: List[str]) -> int:
 #---------------------------------------------------
 
 def main() -> None:
-  res_a, res_b = process(utils.get_input_list(__name__))
-  print(res_a) # 200
-  print(res_b) # 116
+  process(utils.get_input_list(__name__)) # 200, 116
 
 
 if __name__ == "__main__":

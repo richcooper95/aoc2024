@@ -110,6 +110,7 @@ class Ship:
       self.process_instruction(match[1], int(match[2]))
 
 
+@utils.display
 def process(part: utils.Part):
   ship = Ship(
     np.array([0, 0]),
@@ -125,8 +126,8 @@ def process(part: utils.Part):
 #---------------------------------------------------
 
 def main() -> None:
-  print(process(utils.Part.A)) # 998
-  print(process(utils.Part.B)) # 71586
+  process(utils.Part.A) # 998
+  process(utils.Part.B) # 71586
 
 
 if __name__ == "__main__":

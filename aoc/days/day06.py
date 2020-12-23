@@ -5,6 +5,7 @@ from .. import utils
 __all__ = ("main")
 
 
+@utils.display
 def process(lines: List[str]) -> Tuple[int]:
   i = 0
   count_a = 0
@@ -24,9 +25,7 @@ def process(lines: List[str]) -> Tuple[int]:
 #---------------------------------------------------
 
 def main() -> None:
-  res_a, res_b = process(utils.get_input_list(__name__))
-  print(res_a) # 6532
-  print(res_b) # 3427
+  process(utils.get_input_list(__name__)) # 6532, 3427
 
 
 if __name__ == "__main__":

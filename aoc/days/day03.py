@@ -41,6 +41,7 @@ class Slope:
 
 
 # O(N*S)
+@utils.display
 def count_trees(
   lines: List[str],
   slopes: List["Slope"]
@@ -56,8 +57,8 @@ def count_trees(
 
 def main() -> None:
   input_list = utils.get_input_list(__name__)
-  print(count_trees(input_list, [Slope(3, 1)])) # 225
-  print(count_trees( # 1115775000
+  count_trees(input_list, [Slope(3, 1)]) # 225
+  count_trees( # 1115775000
       input_list,
       [
         Slope(1, 1),
@@ -66,7 +67,7 @@ def main() -> None:
         Slope(7, 1),
         Slope(1, 2)
       ]
-  ))
+  )
 
 
 if __name__ == "__main__":

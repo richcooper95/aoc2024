@@ -26,6 +26,7 @@ def find_pair_product(
 
 
 # O(N^2)
+@utils.display
 def find_triplet_product(nums) -> int:
   for n in nums:
     try:
@@ -38,8 +39,8 @@ def find_triplet_product(nums) -> int:
 
 def main() -> None:
   nums = utils.get_input_list(__name__, cast_func=int)
-  print(find_pair_product(nums, 2020)) # 73371
-  print(find_triplet_product(nums)) # 127642310
+  utils.display(find_pair_product)(nums, 2020) # 73371
+  find_triplet_product(nums) # 127642310
 
 
 if __name__ == "__main__":
