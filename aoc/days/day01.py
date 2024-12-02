@@ -1,3 +1,4 @@
+from collections import Counter
 from typing import List
 
 from .. import utils
@@ -5,42 +6,29 @@ from .. import utils
 __all__ = ("main")
 
 
-class PairNotFoundError(Exception):
-  pass
-
-class TripletNotFoundError(Exception):
-  pass
-
-
-# O(N)
-def find_pair_product(
-  nums: List[int],
-  total: int
-) -> int:
-  s = set(nums)
-  for num in nums:
-    complement = total - num
-    if complement in s:
-      return num * complement
-  raise PairNotFoundError
-
-
-# O(N^2)
 @utils.display
-def find_triplet_product(nums) -> int:
-  for n in nums:
-    try:
-      return n * find_pair_product(nums, 2020 - n)
-    except PairNotFoundError:
-      pass
-  raise TripletNotFoundError
+def difference(input_list: List[List[int]]) -> int:
+  total = 0
+  for i, j in zip(sorted(input_list[0]), sorted(input_list[1])):
+    total += abs(i - j)
+
+  return total
+
+@utils.display
+def similarity(input_list: List[List[int]]) -> int:
+  counts = Counter(input_list[1])
+  total = 0
+  for i in input_list[0]:
+    total += counts[i] * i
+
+  return total
 
 #---------------------------------------------------
 
 def main() -> None:
-  nums = utils.get_input_list(__name__, cast_func=int)
-  utils.display(find_pair_product)(nums, 2020) # 73371
-  find_triplet_product(nums) # 127642310
+  input_list = utils.get_split_input_list(__name__, cast_funcs=[int, int])
+  difference(input_list)
+  similarity(input_list)
 
 
 if __name__ == "__main__":
