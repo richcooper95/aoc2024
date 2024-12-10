@@ -33,6 +33,10 @@ class Equation:
 
         return 0
 
+      # (C) Derik - nice easy optimisation!
+      if operands[0] > self.value:
+        return 0
+
       with_plus = _solve([operands[0] + operands[1]] + operands[2:])
       if with_plus == self.value:
         return self.value
